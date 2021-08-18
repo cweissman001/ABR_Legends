@@ -1,0 +1,6 @@
+[submodule "Assets/StreamingAssets/ABRDesignInterface"]
+	path = Assets/StreamingAssets/ABRDesignInterface
+	url = git@github.umn.edu:ivlab-cs/ABRDesignInterface.git
+[submodule "Assets/IVLab-Unity-Utilities.git"]
+	path = Assets/IVLab-Unity-Utilities.git
+	url = git@github.umn.edu:ivlab-cs/IVLab-Unity-Utilities.git

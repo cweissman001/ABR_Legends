@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ABR Legend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'composition/css/renderingStrategy.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/blocks.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/panels.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/puzzlePieces.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/loadingSpinner.css' %}">
+    <link rel="stylesheet" href="{% static 'legend/css/index.css' %}">
+</head>
+
+<body>
+
+    <div id="connecting-header">
+        <p>
+            Waiting to connect to ABR Engine...
+        </p>
+        <button onclick="window.location.reload()"><span class="material-icons">refresh</span> Try again</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+        </script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/furf/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+    <script>
+        // Get the static and media URL from Django and store it for JS use
+        // STATIC_URL is for static items (like puzzle piece svgs)
+        var STATIC_URL = "{% get_static_prefix %}";
+
+        // MEDIA_URL is for dynamic items (like states, screenshots, and visassets)
+        let colonIndex = window.location.host.indexOf(':');
+        var MEDIA_URL = 'http://' + window.location.host.slice(0, colonIndex + 1) + '8001/';
+    </script>
+    <script src="{% static 'legend/js/index.js' %}" type="module"></script>
+</body>
+
+</html>

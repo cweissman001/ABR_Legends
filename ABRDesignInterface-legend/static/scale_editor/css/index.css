@@ -1,0 +1,40 @@
+.centered {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 1rem 0;
+}
+
+#trash {
+    width: 2em;
+    height: 2em;
+    margin: 0 1rem;
+}
+
+.color-thumb {
+    display: flex;
+    flex-direction: column;
+    width: 50px; /* Hardcoded based on Spectrum colorpicker width */
+    align-items: center;
+    border: 1px solid #727272;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.percentage-display {
+    text-align: center;
+}
+
+#colormap * {
+    z-index: 10;
+}
+
+.marker-bar {
+    width: 0;
+    border-left: 1px solid #727272;
+    position: absolute;
+}

@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Editor</title>
+    <link rel="stylesheet" href="{% static 'scale_editor/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/loadingSpinner.css' %}">
+    <link rel="stylesheet" href="{% static 'composition/css/panels.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div id="action-headers">
+        <div id="file-header" class="action-header">
+        </div>
+        <div id="state-header" class="action-header">
+        </div>
+        <div id="screenshot-header" class="action-header">
+            <img src="{% static 'composition/trash.svg' %}" alt="Trash can" id="trash">
+        </div>
+    </div>
+
+    <div id="colormap" class="centered"></div>
+    <div class="centered">
+        <div id="color-slider"></div>
+    </div>
+
+    <div id="data-remapper" class="centered">
+        <div id="histogram" class="centered"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+        </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.js"></script>
+    <script src="//d3js.org/d3.v5.min.js"></script>
+    <script>
+        // Get the static and media URL from Django and store it for JS use
+        // STATIC_URL is for static items (like puzzle piece svgs)
+        var STATIC_URL = "{% get_static_prefix %}";
+
+        // MEDIA_URL is for dynamic items (like states, screenshots, and visassets)
+        let colonIndex = window.location.host.indexOf(':');
+        var MEDIA_URL = 'http://' + window.location.host.slice(0, colonIndex + 1) + '8001/';
+    </script>
+    <script src="{% static 'scale_editor/js/index.js' %}" type="module"></script>
+</body>
+</html>

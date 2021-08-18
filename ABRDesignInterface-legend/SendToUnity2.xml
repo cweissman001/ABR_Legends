@@ -1,0 +1,113 @@
+<ServerManagerConfiguration>
+  <ProxyGroup name="filters">
+    <SourceProxy name="SendToUnity2" class="vtkPythonProgrammableFilter" label="SendToUnity2">
+
+      <Documentation
+        long_help="Send unstructured grid to Unity"
+        short_help="Send unstructured grid to Unity">
+      </Documentation>
+
+
+      <InputProperty
+        name="Input"
+        command="SetInputConnection">
+          <ProxyGroupDomain name="groups">
+            <Group name="sources"/>
+            <Group name="filters"/>
+          </ProxyGroupDomain>
+           <DataTypeDomain name="input_type">
+  <DataType value="vtkUnstructuredGrid"/>
+  <DataType value="vtkPolyData"/>
+</DataTypeDomain>
+      </InputProperty>
+
+
+      <StringVectorProperty
+        name="host"
+        label="host"
+        initial_string="host"
+        command="SetParameter"
+        animateable="1"
+        default_values="localhost"
+        number_of_elements="1">
+        <Documentation></Documentation>
+      </StringVectorProperty>
+
+
+      <StringVectorProperty
+        name="label"
+        label="label"
+        initial_string="label"
+        command="SetParameter"
+        animateable="1"
+        default_values="label"
+        number_of_elements="1">
+        <Documentation></Documentation>
+      </StringVectorProperty>
+
+
+      <IntVectorProperty
+        name="ping"
+        label="ping"
+        initial_string="ping"
+        command="SetParameter"
+        animateable="1"
+        default_values="1"
+        number_of_elements="1">
+        <Documentation></Documentation>
+      </IntVectorProperty>
+
+
+      <IntVectorProperty
+        name="port"
+        label="port"
+        initial_string="port"
+        command="SetParameter"
+        animateable="1"
+        default_values="1900"
+        number_of_elements="1">
+        <Documentation></Documentation>
+      </IntVectorProperty>
+
+
+
+      <IntVectorProperty
+        name="dummy"
+        label="dummy"
+        initial_string="dummy"
+        command="SetParameter"
+        animateable="1"
+        default_values="1"
+        number_of_elements="1">
+        <Documentation></Documentation>
+      </IntVectorProperty>
+
+      <!-- Output data type: "vtkUnstructuredGrid" -->
+      <IntVectorProperty command="SetOutputDataSetType"
+                         default_values="4"
+                         name="OutputDataSetType"
+                         number_of_elements="1"
+                         panel_visibility="never">
+        <Documentation>The value of this property determines the dataset type
+        for the output of the programmable filter.</Documentation>
+      </IntVectorProperty>
+
+
+      <StringVectorProperty
+        name="Script"
+        command="SetScript"
+        number_of_elements="1"
+        default_values="&#xA;pd = self.GetPolyDataInput()&#xA;if pd != None:&#xA;  from vtk import vtkAppendFilter, vtkUnstructuredGrid&#xA;  af = vtkAppendFilter()&#xA;  af.SetInputData(pd)&#xA;  af.Update()&#xA;  self.GetUnstructuredGridOutput().ShallowCopy(af.GetOutput())&#xA;  del af&#xA;&#xA;import socket&#xA;&#xA;try:&#xA;  s = socket.socket()&#xA;  s.connect((host, port))&#xA;except:&#xA;  print 'unable to connect to server', host, port&#xA;&#xA;from paraview import servermanager as sm&#xA;from paraview.simple import GetActiveView&#xA;&#xA;if 'UnitySyncer' not in dir(sm):&#xA;  def callback(caller, *args):&#xA;    from struct import pack&#xA;    from paraview import servermanager as sm&#xA;    if 'UnityModified' not in dir(sm) or sm.UnityModified == 1:&#xA;      sm.UnityModified = 0&#xA;      import socket&#xA;      sm.UnityFrame = sm.UnityFrame + 1&#xA;      try:&#xA;        s = socket.socket()&#xA;        s.connect((host, port))&#xA;      except:&#xA;        return&#xA;      else:&#xA;        update = 'update'.encode()&#xA;        print('Sending' + ' update')&#xA;        s.send(pack('!i', len(update)))&#xA;        s.send(update)&#xA;        ack = s.recv(2).decode()&#xA;        print('update got ' + ack)&#xA;&#xA;  sm.UnityFrame  = 0&#xA;  sm.UnitySyncer = GetActiveView().AddObserver('EndEvent', callback, 1.0)&#xA;&#xA;from struct import pack&#xA;from vtk import vtkUnstructuredGridWriter&#xA;&#xA;wrtr = vtkUnstructuredGridWriter()&#xA;wrtr.WriteToOutputStringOn()&#xA;wrtr.SetInputData(self.GetUnstructuredGridOutput())&#xA;wrtr.Update()&#xA;&#xA;lab = label.encode()&#xA;print('Sending ' + label)&#xA;s.send(pack('!i', len(lab)))&#xA;s.send(lab)&#xA;&#xA;data = wrtr.GetOutputString().encode()&#xA;s.send(pack('!i', len(data)))&#xA;s.send(data)&#xA;&#xA;ack = s.recv(2).decode()&#xA;print(label + ' got ' + ack)&#xA;sm.UnityModified = 1&#xA;&#xA;s.close()&#xA;&#xA;return 1&#xA;"
+        panel_visibility="advanced">
+        <Hints>
+         <Widget type="multi_line"/>
+       </Hints>
+      <Documentation>This property contains the text of a python program that
+      the programmable source runs.</Documentation>
+      </StringVectorProperty>
+
+
+
+    </SourceProxy>
+ </ProxyGroup>
+</ServerManagerConfiguration>
